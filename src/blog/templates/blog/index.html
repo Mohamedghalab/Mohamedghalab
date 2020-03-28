@@ -11,8 +11,11 @@
 </head>
 <body>
     <header>
+      <!--start Navbar-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">مدونه</a>
+            <a class="navbar-brand" href="#">
+              <img src="{% static 'blog/images/blog-logo.png' %}" alt="" width="30">
+              مدونه</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -43,11 +46,45 @@
               </ul>
             </div>
         </nav>
+        <!--end Navbar-->
     </header>
 
-    <div>
-        <h1><i class="fas fa-home"></i>أهلا بكم فى المدونه !</h1>
-    </div>
+    <section>
+      <div class="container">
+          <div class="row mt-4">
+              <div class="col-md-8">
+                التدوينات
+              </div>
+              <div class="col-md-4">
+                  <div class="card mb-3">
+                      <h3 class="text-center bg-secondary text-light p-2">آخر التدوينات</h3>
+                      <ul>
+                        <li>التدوينه الاولى</li>
+                        <li>التدوينه الثانيه</li>
+                        <li>التدوينه الثالثه</li>
+                        <li>التدوينه الرابعه</li>
+                        <li>التدوينه الخامسه</li>
+                      </ul>
+
+                  </div>
+                  <div class="card mb-3">
+                      <h3 class="text-center bg-secondary text-light p-2">آخر التعليقات</h3>
+                      <ul>
+                        <li>التعليق الاول</li>
+                        <li>التعليق الثانى</li>
+                        <li>التعليق الثالث</li>
+                        <li>التعليق الرابع</li>
+                        <li>التعليق الخامس</li>
+                      </ul>
+                    
+                  </div>
+              </div>
+          </div>
+      </div>
+    </section>
+
+
+
     <script src="{% static 'blog/js/jquery-3.4.1.slim.min.js' %}"></script>
     <script src="{% static 'blog/js/popper.min.js' %}"></script>
     <script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
