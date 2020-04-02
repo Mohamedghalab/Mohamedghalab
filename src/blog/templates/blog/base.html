@@ -64,24 +64,15 @@
               <div class="col-md-4">
                   <div class="card mb-3">
                       <h3 class="text-center bg-secondary text-light p-2">آخر التدوينات</h3>
-                      <ul>
-                        <li>التدوينه الاولى</li>
-                        <li>التدوينه الثانيه</li>
-                        <li>التدوينه الثالثه</li>
-                        <li>التدوينه الرابعه</li>
-                        <li>التدوينه الخامسه</li>
-                      </ul>
+                      
+                      {% include 'blog/latest_post.html' %}
 
                   </div>
                   <div class="card mb-3">
                       <h3 class="text-center bg-secondary text-light p-2">آخر التعليقات</h3>
-                      <ul>
-                        <li>التعليق الاول</li>
-                        <li>التعليق الثانى</li>
-                        <li>التعليق الثالث</li>
-                        <li>التعليق الرابع</li>
-                        <li>التعليق الخامس</li>
-                      </ul>
+                      
+                      {% include 'blog/latest_comments.html' %}
+                     
                     
                   </div>
               </div>

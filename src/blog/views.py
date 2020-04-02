@@ -1,33 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render ,get_object_or_404
+from .models import Post, Comment
+from .forms import NewComment
 
-posts = [
-    {
-        'title':'التدوينه الاولى',
-        'content':'هذا نص تجريبى خاص بالتدوينه الاولى',
-        'author':'Mohamed ghalab',
-        'date_posted':'29-3-2020'
-    },
-    {
-        'title':'التدوينه الثانيه',
-        'content':'هذا نص تجريبى خاص بالتدوينه الثانيه',
-        'author':'Mohamed ghalab',
-        'date_posted':'29-3-2020'
-    },
-    {
-        'title':'التدوينه الثالثه',
-        'content':'هذا نص تجريبى خاص بالتدوينه الثالثه',
-        'author':'Mohamed ghalab',
-        'date_posted':'29-3-2020'
-    },
-    {
-        'title':'التدوينه الرابعه',
-        'content':'هذا نص تجريبى خاص بالتدوينه الرابعه',
-        'author':'Mohamed ghalab',
-        'date_posted':'29-3-2020'
-    }
-]
 
 def home(request):
+    posts=Post.objects.all()
     context = {
         'title':'الصفحة الرئيسيه',
         'posts':posts,
@@ -36,3 +13,27 @@ def home(request):
 
 def about(request):
     return render(request, 'blog/about.html')
+
+
+def detail(request,post_id):
+    post = get_object_or_404(Post,pk=post_id)
+    comments = post.comments.filter(active=True)
+    #check befor save comments
+    if request.method =="POST":
+        comment_form = NewComment(data=request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.post = post
+            new_comment.save()
+            comment_form = NewComment()
+    else:
+        comment_form = NewComment()
+
+    context = {
+        'title':post,
+        'post':post,
+        'comments':comments,
+        'comment_form':comment_form,
+    }
+
+    return render(request,'blog/detail.html',context)

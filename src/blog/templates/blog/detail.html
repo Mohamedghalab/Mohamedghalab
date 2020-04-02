@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class='border mb-3 p-3'>
+      <img src="{% static 'blog/images/profile.jpg' %}" class="img-fluid rounded-circle border m-2" width="70px" alt="author image">
+      <span>{{post.date_posted|date:'نشر فى d-m-Y'}}</span>
+      <h3>{{post.title}}</h4>
+      <p>{{post.content}}</p>
+    </div>
+
+    <div class="border m-2">
+      <h2 class="border-bottom mt-5 mb-3">التعليقات ({{comments.count}})</h2>
+      {% for comment in comments  %}
+      <div class="mb-3 p-3 comment">
+        <h6 class='m-2 '>{{comment.name}} فى <span class="text-secondary"> 
+                    {{comment.comment_date|date:'d-m-Y'}}</span></h6>
+
+        <p class='mb-0'>{{comment.body}}</p>
+      </div>
+      {% empty %}
+        <h5 class="text-center mb-2 p-4 comment">لايوجد تعليقات</h5>
+      {% endfor %}
+    </div>
+
+    <h2 class="border-bottom pb-3 mb-3 mt-5">إضافة تعليق</h2>
+    <div class="border p-4 mt-4">
+      <form method="POST">
+        {% csrf_token %}
+        {{comment_form|crispy}}
+        <input class="btn btn-secondary m-4" type="submit" value="نشر التعليق" >
+      </form>
+    </div>
+{% endblock %}
