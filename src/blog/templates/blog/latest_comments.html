@@ -1,7 +1,13 @@
- <ul class="list-group-flush latest-comment">
-    {% for comment in comments %}
+<ul class="list-group-flush latest-comment">
+    {% for comment in l_comments %}
         <li class='list-group-item latest-comment-item'>
-           <a class='text-dark' href="{% url 'detail' comment.post.id %}">{{comment.body}}</a>
+           <a class='text-dark' href="{% url 'detail' comment.post.id %}">
+            {% if comment.body|length > 20 %}
+                {{comment.body|slice:"35"}} .. 
+                </a>
+            {% else %}
+                {{comment.body}}
+            {% endif %}
         </li>
     {% empty %}
          <li class='list-group-item latest-comment-item'>لا يوجد تعليقات</li>
