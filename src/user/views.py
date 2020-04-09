@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import UserCreationForm, LoginForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from blog.models import Post
 
 
 
@@ -44,5 +45,13 @@ def logout_user(request):
     logout(request)
     return render(request,'user/logout.html',{
         'title':'تسجيل الخروج',
+
+    })
+
+def profile(request):
+    posts = Post.objects.filter(author=request.user)
+    return render(request,'user/profile.html',{
+        'title':'الملف الشخصى',
+        'posts':posts,
 
     })

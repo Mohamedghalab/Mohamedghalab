@@ -4,7 +4,7 @@
     <div class='border mb-3 p-3'>
         <div class="row">
             <div class="col-md-3 text-center">
-                <img src="{% static 'blog/images/profile.jpg' %}" class="img-fluid rounded-circle border m-2" width="120px" alt="author image">
+                <img src="{{user.profile.image.url}}" class="img-fluid rounded-circle border m-2" width="120px" alt="author image">
                 <div class="mt-3">
                     <a class="btn btn-secondary" href=""><i class='fas fa-pen fa-xs'></i> تحرير </a>
                 </div>
@@ -17,24 +17,28 @@
         </div>
     </div>
     <div class="row mb-5 mt-4">
+   
         <div class="col-md">
             <h3>عدد التدوينات الخاصه بى</h3>
-            <h2 class='bg-secondary text-center text-light p-2'>(40)</h2>
+            <h2 class='bg-secondary text-center text-light p-2'>({{posts.count}})</h2>
             <h3 class="mt-3">تدويناتى</h3>
-            <ul class="mt-2 pr-1">
-                <a class="text-dark" href="">عنوان التدوينه</a>
-            </ul>
-            <ul class="mt-2 pr-1">
-                <a class="text-dark" href="">عنوان التدوينه</a>
-            </ul>
-            <ul class="mt-2 pr-1">
-                <a class="text-dark" href="">عنوان التدوينه</a>
-            </ul>
+            {% for post in posts %}
+                <ul class="mt-2 pr-1">
+                    <a class="text-dark" href="{% url 'detail' post.id %}">{{post.title}}</a>
+                </ul>
+            {% empty %}
+                <div class="mt-2 text-center">
+                <h3 class="text-dark" >لا يوجد تدوينات</h3>
+                </div>
+            {% endfor %}
+            {% if posts.count > 10 %}
             <div class="text-center">
                 <a class="btn btn-secondary" href="">التالى</a>
                 <span class="p-4">الصفحة 1 من 10</span>
                 <a class="btn btn-secondary" href="">السابق</a>
             </div>
+            {% endif %}
         </div>
+       
     </div>
 {% endblock %}
