@@ -1,10 +1,10 @@
 from django.shortcuts import render ,get_object_or_404
 from .models import Post, Comment
-from .forms import NewComment
-from django.views.generic import ListView
+from .forms import NewComment, PostCreateForm
+from django.views.generic import ListView, CreateView
 
 def home(request):
-    posts=Post.objects.all()
+    posts = Post.objects.all()
     context = {
         'title':'الصفحة الرئيسيه',
         'posts':posts,
@@ -45,3 +45,14 @@ def detail(request,post_id):
     }
 
     return render(request,'blog/detail.html',context)
+
+
+class PostCreatView(CreateView):
+    model = Post
+    #fields = ['title','content']
+    template_name = 'blog/new_post.html'
+    form_class = PostCreateForm
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)

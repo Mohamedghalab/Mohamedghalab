@@ -48,7 +48,7 @@
               </ul>
               <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
-                    <li class="nav-item"><a class='nav-link' href="">تدوينه جديده</a></li>
+                    <li class="nav-item"><a class='nav-link' href="{% url 'new_post' %}">تدوينه جديده</a></li>
                     <li class="nav-item"><a class='nav-link' href="{% url 'profile' %}"> الملف الشخصى</a></li>
                     <li class="nav-item"><a class='nav-link' href="{% url 'logout' %}"> تسجيل الخروج</a></li>
                 {% else %}
