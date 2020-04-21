@@ -1,7 +1,7 @@
 from django.shortcuts import render ,get_object_or_404
 from .models import Post, Comment
 from .forms import NewComment
-
+from django.views.generic import ListView
 
 def home(request):
     posts=Post.objects.all()
@@ -10,6 +10,14 @@ def home(request):
         'posts':posts,
     }
     return render(request,'blog/index.html',context)
+
+class Post_view(ListView):
+    model = Post
+    template_name = 'blog/index.html'
+    context_object_name = 'posts'
+    paginate_by = 3
+    ordering = ['-date_posted']
+
 
 def about(request):
     return render(request, 'blog/about.html')

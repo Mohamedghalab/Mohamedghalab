@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import Profile
 
 class UserCreationForm(forms.ModelForm):
     username = forms.CharField(label='اسم المستخدم', max_length=30, help_text='اسم المستخدم يجب الا يحتوى على مسافات')
@@ -26,10 +27,24 @@ class UserCreationForm(forms.ModelForm):
             raise forms.ValidationError('يوجد مستخدم مسجل بهذا الاسم')
         return cd['username']
 
-
 class LoginForm(forms.ModelForm):
     username = forms.CharField(label='اسم المستخدم')
     password = forms.CharField(label='كلمة المرور', widget=forms.PasswordInput())
     class Meta:
         model = User
         fields = ('username','password')
+
+
+class UserUpdateForm(forms.ModelForm): 
+    first_name = forms.CharField(label='الاسم الاول', max_length=30)
+    last_name = forms.CharField(label='الاسم الاخير', max_length=30)
+    email = forms.EmailField(label='البريد الالكترونى')
+    class Meta:
+        model = User
+        fields = ('first_name','last_name','email')
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['image']
