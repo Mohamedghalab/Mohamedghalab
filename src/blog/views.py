@@ -1,7 +1,8 @@
 from django.shortcuts import render ,get_object_or_404
 from .models import Post, Comment
 from .forms import NewComment, PostCreateForm
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 def home(request):
     posts = Post.objects.all()
@@ -47,7 +48,7 @@ def detail(request,post_id):
     return render(request,'blog/detail.html',context)
 
 
-class PostCreatView(CreateView):
+class PostCreatView(LoginRequiredMixin, CreateView):
     model = Post
     #fields = ['title','content']
     template_name = 'blog/new_post.html'
@@ -56,3 +57,23 @@ class PostCreatView(CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+
+class PostUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
+    model = Post
+    template_name = 'blog/new_post.html'
+    form_class = PostCreateForm
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        else:
+            return False
+
+
+    
