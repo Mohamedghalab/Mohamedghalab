@@ -4,13 +4,13 @@
 
 {% block content %}
     <div class='border mb-3 p-3'>
-      <img src="{{post.author.profile.image.url}}" class="img-fluid rounded-circle border m-2" width="70px" alt="author image">
+      <img src="{{post.author.profile.image.url}}" class="img-fluid rounded-circle border m-2" style="width: 70px; height:70px;" alt="author image">
       <span>{{post.date_posted|date:'نشر فى d-m-Y'}}</span>
       <!-- buttons groub-->
       {% if post.author == user %}
       <div class="form-group  btn-create">
         <a class="btn btn-secondary" href="{% url 'post_update' post.pk %}">تحرير</a>
-        <button class="btn btn-danger">حذف</button>
+        <a class="btn btn-danger" href="{% url 'post_delete' post.pk %}">حذف</a>
       </div>
       {% endif %}
       <h3>{{post.title}}</h4>

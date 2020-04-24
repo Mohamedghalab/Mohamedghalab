@@ -1,8 +1,10 @@
-from django.shortcuts import render ,get_object_or_404
+from django.shortcuts import render ,get_object_or_404, redirect
 from .models import Post, Comment
 from .forms import NewComment, PostCreateForm
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
+
 
 def home(request):
     posts = Post.objects.all()
@@ -24,28 +26,31 @@ def about(request):
     return render(request, 'blog/about.html')
 
 
+@login_required
 def detail(request,post_id):
-    post = get_object_or_404(Post,pk=post_id)
+    post = get_object_or_404(Post, pk=post_id)
     comments = post.comments.filter(active=True)
-    #check befor save comments
-    if request.method =="POST":
+    
+    # check before save data from comment form
+    if request.method == 'POST':
         comment_form = NewComment(data=request.POST)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
             new_comment.post = post
             new_comment.save()
             comment_form = NewComment()
+            return redirect('detail',post_id)
     else:
         comment_form = NewComment()
 
     context = {
-        'title':post,
-        'post':post,
-        'comments':comments,
-        'comment_form':comment_form,
+        'title': post,
+        'post': post,
+        'comments': comments,
+        'comment_form': comment_form,
     }
 
-    return render(request,'blog/detail.html',context)
+    return render(request, 'blog/detail.html', context)
 
 
 class PostCreatView(LoginRequiredMixin, CreateView):
@@ -61,7 +66,7 @@ class PostCreatView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
     model = Post
-    template_name = 'blog/new_post.html'
+    template_name = 'blog/post_update.html'
     form_class = PostCreateForm
 
     def form_valid(self, form):
@@ -76,4 +81,14 @@ class PostUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
             return False
 
 
+class PostDeleteView(UserPassesTestMixin, LoginRequiredMixin, DeleteView):
+    model = Post
+    success_url ='/' 
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        else:
+            return False
     
